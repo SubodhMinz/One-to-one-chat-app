@@ -1,0 +1,48 @@
+{% extends 'chat_app/base.html' %}
+{% block title %}Home{% endblock title %}
+
+{% block main %}
+<div class="container">
+
+    <div class="left">
+        <div class="left-top">
+            {% if request.user.is_authenticated %}
+                <h3>{{request.user|capfirst}}</h3>
+                <a href="{% url 'user_logout' %}">Logout</a>
+                {% else %}
+                <a style="float:right;" href="{% url 'login' %}">Login</a>
+                <a style="float:right;" href="{% url 'signup' %}">Sign Up &ensp;</a>
+            {% endif %}
+        </div>
+        
+        <div class="left-buttom">
+            {% for user in users %}
+                <a href="{% url 'u_id' user.id %}">
+                    <p id="user">{{user.username|capfirst}}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="right" id="right">
+
+        <div class="right-top">
+            <h3 class="talk-with">Talking with : {{user.username|capfirst}}</h3>
+        </div>
+
+        <textarea id="chat-log" readonly>
+            {% for chat in chats %}
+                <p>{{chat.content}}</p>
+            {% endfor %}
+        </textarea><br>
+
+        <div class="message">
+            <input type="text" id="chat-message-input" size="100"><br>
+            <button id="chat-message-submit">Send</button>
+        </div>
+    </div>
+</div>
+    {% comment %} {{user.id|json_script:"id"}} {% endcomment %}
+    {{id|json_script:"id"}}
+{% endblock main %}
